@@ -5,8 +5,7 @@
     alt="QuickPCA Logo" 
     width="800">
 
-QuickPCA is a lightweight Python script that performs Principal Component Analysis (PCA) on molecular dynamics trajectories in PyMOL. It automatically loads trajectory data from the curent directory and generates a publication-ready report.
-
+QuickPCA is a lightweight Python tool for Essential Dynamics Analysis of molecular dynamics trajectories in PyMOL. It automatically detects and loads MD trajectories, performs Principal Component Analysis, and generates a publication-ready report featuring free-energy landscapes, residue cross-correlation maps, explained variance profiles and principal component projections.
 ## 👤 Author
 
 This code was developed by **Gleb Novikov**
