@@ -50,8 +50,7 @@ def cluster_pcs(
     projections = np.asarray(projections, dtype=np.float64)
     if projections.ndim != 2:
         raise ValueError(
-            f"projections must be 2-D (n_frames, n_components), got shape "
-            f"{projections.shape}."
+            f"projections must be 2-D (n_frames, n_components), got shape {projections.shape}."
         )
 
     n_frames, n_components = projections.shape
@@ -60,8 +59,7 @@ def cluster_pcs(
         raise ValueError(f"n_clusters must be >= 1, got {n_clusters}.")
     if n_clusters > n_frames:
         raise ValueError(
-            f"n_clusters ({n_clusters}) cannot exceed the number of frames "
-            f"({n_frames})."
+            f"n_clusters ({n_clusters}) cannot exceed the number of frames ({n_frames})."
         )
 
     X = projections[:, :n_dims]
@@ -101,8 +99,14 @@ def plot_clusters(
     fig, ax = plt.subplots(figsize=(9, 7))
 
     sc = ax.scatter(
-        pc1, pc2, c=labels, cmap="tab10", s=14, alpha=0.75,
-        edgecolors="none", rasterized=True,
+        pc1,
+        pc2,
+        c=labels,
+        cmap="tab10",
+        s=14,
+        alpha=0.75,
+        edgecolors="none",
+        rasterized=True,
     )
 
     # Centroids: cluster_centers_ live in the clustered PC subspace, whose first
@@ -113,13 +117,26 @@ def plot_clusters(
         cx, cy = centers[:, 0], np.zeros(centers.shape[0])
 
     ax.scatter(
-        cx, cy, c="black", s=240, marker="X",
-        edgecolors="white", linewidths=1.5, zorder=5, label="Centroids",
+        cx,
+        cy,
+        c="black",
+        s=240,
+        marker="X",
+        edgecolors="white",
+        linewidths=1.5,
+        zorder=5,
+        label="Centroids",
     )
     for i, (x, y) in enumerate(zip(cx, cy, strict=False)):
         ax.annotate(
-            str(i), (x, y), color="white", fontsize=8, fontweight="bold",
-            ha="center", va="center", zorder=6,
+            str(i),
+            (x, y),
+            color="white",
+            fontsize=8,
+            fontweight="bold",
+            ha="center",
+            va="center",
+            zorder=6,
         )
 
     n_clusters = centers.shape[0]
@@ -130,7 +147,8 @@ def plot_clusters(
     ax.set_ylabel(ylabel, fontsize=11, fontweight="bold")
     ax.set_title(
         f"Conformational-State Clustering — {n_clusters} clusters",
-        fontsize=13, fontweight="bold",
+        fontsize=13,
+        fontweight="bold",
     )
     ax.legend(fontsize=9, loc="best", frameon=True)
     ax.grid(True, color="lightgray", alpha=0.5, linestyle="--", linewidth=0.5)
@@ -188,10 +206,6 @@ def register(subparsers: argparse._SubParsersAction) -> None:
     p.add_argument("--selection", "-s", default="name CA", help="Atom selection.")
     p.add_argument("--interval", "-i", type=int, default=1, help="Frame stride.")
     p.add_argument("--ncomp", type=int, default=10, help="Number of PCs.")
-    p.add_argument(
-        "--clusters", "-k", type=int, default=4, help="Number of K-means clusters."
-    )
-    p.add_argument(
-        "--output", "-o", default="clusters.png", help="Output PNG path."
-    )
+    p.add_argument("--clusters", "-k", type=int, default=4, help="Number of K-means clusters.")
+    p.add_argument("--output", "-o", default="clusters.png", help="Output PNG path.")
     p.set_defaults(func=_cmd_cluster)

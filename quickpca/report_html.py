@@ -25,8 +25,7 @@ def _require_plotly():
         from plotly.subplots import make_subplots
     except ImportError as exc:  # pragma: no cover - exercised only without plotly
         raise ImportError(
-            "Plotly is required for interactive HTML reports: "
-            "pip install quickpca[viz]"
+            "Plotly is required for interactive HTML reports: pip install quickpca[viz]"
         ) from exc
     return go, make_subplots
 
@@ -99,8 +98,7 @@ def build_figure(
                 "y": 0.79,
             },
             contours={"coloring": "fill"},
-            hovertemplate="PC1=%{x:.2f}<br>PC2=%{y:.2f}<br>F=%{z:.2f} kJ/mol"
-            "<extra></extra>",
+            hovertemplate="PC1=%{x:.2f}<br>PC2=%{y:.2f}<br>F=%{z:.2f} kJ/mol<extra></extra>",
             name="FEL",
         ),
         row=1,
@@ -112,8 +110,12 @@ def build_figure(
             x=[pc1[0]],
             y=[pc2[0]],
             mode="markers",
-            marker={"symbol": "star", "size": 16, "color": "lime",
-                    "line": {"color": "black", "width": 1}},
+            marker={
+                "symbol": "star",
+                "size": 16,
+                "color": "lime",
+                "line": {"color": "black", "width": 1},
+            },
             name="Start",
             hovertemplate="Start<br>PC1=%{x:.2f}<br>PC2=%{y:.2f}<extra></extra>",
         ),
@@ -125,8 +127,12 @@ def build_figure(
             x=[pc1[-1]],
             y=[pc2[-1]],
             mode="markers",
-            marker={"symbol": "star", "size": 16, "color": "red",
-                    "line": {"color": "black", "width": 1}},
+            marker={
+                "symbol": "star",
+                "size": 16,
+                "color": "red",
+                "line": {"color": "black", "width": 1},
+            },
             name="End",
             hovertemplate="End<br>PC1=%{x:.2f}<br>PC2=%{y:.2f}<extra></extra>",
         ),
@@ -155,8 +161,7 @@ def build_figure(
                 "opacity": 0.8,
             },
             name="Projection",
-            hovertemplate="Frame=%{marker.color}<br>PC1=%{x:.2f}"
-            "<br>PC2=%{y:.2f}<extra></extra>",
+            hovertemplate="Frame=%{marker.color}<br>PC1=%{x:.2f}<br>PC2=%{y:.2f}<extra></extra>",
         ),
         row=1,
         col=2,
@@ -200,9 +205,7 @@ def build_figure(
     fig.update_yaxes(title_text=f"PC2 ({pc2_pct:.1f}%)", row=1, col=1)
     fig.update_xaxes(title_text=f"PC1 ({pc1_pct:.1f}%)", row=1, col=2)
     fig.update_yaxes(title_text=f"PC2 ({pc2_pct:.1f}%)", row=1, col=2)
-    fig.update_xaxes(
-        title_text="Principal Component", dtick=1, row=2, col=1
-    )
+    fig.update_xaxes(title_text="Principal Component", dtick=1, row=2, col=1)
     fig.update_yaxes(title_text="Explained Variance (%)", row=2, col=1)
 
     fig.update_layout(

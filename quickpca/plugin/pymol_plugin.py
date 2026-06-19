@@ -75,16 +75,12 @@ def coords_from_pymol(
         frames.append(coords)
 
     if not frames:
-        raise ValueError(
-            f"Selection '{selection}' matched no atoms in any state of "
-            f"'{obj_name}'."
-        )
+        raise ValueError(f"Selection '{selection}' matched no atoms in any state of '{obj_name}'.")
 
     n_atoms = frames[0].shape[0]
     if any(f.shape[0] != n_atoms for f in frames):
         raise ValueError(
-            "Inconsistent atom count across states; "
-            "cannot stack into a coordinate array."
+            "Inconsistent atom count across states; cannot stack into a coordinate array."
         )
 
     return np.stack(frames, axis=0)
@@ -150,20 +146,15 @@ def run_from_pymol(
     if obj_name is None:
         names = cmd.get_names("objects")
         if not names:
-            raise ValueError(
-                "No objects loaded in PyMOL. Load a topology + trajectory first."
-            )
+            raise ValueError("No objects loaded in PyMOL. Load a topology + trajectory first.")
         obj_name = names[0]
 
     coords = coords_from_pymol(cmd, obj_name, selection=selection)
     if coords.shape[0] < MIN_FRAMES:
         raise ValueError(
-            f"Need at least {MIN_FRAMES} frames for a PC1/PC2 landscape, "
-            f"found {coords.shape[0]}."
+            f"Need at least {MIN_FRAMES} frames for a PC1/PC2 landscape, found {coords.shape[0]}."
         )
 
     pca = compute_pca(coords, n_components=n_components, backend=backend)
-    fel = compute_fel(
-        pca.projections, temperature=temperature, n_bins=n_bins, sigma=sigma
-    )
+    fel = compute_fel(pca.projections, temperature=temperature, n_bins=n_bins, sigma=sigma)
     return plot_report(pca, fel, output=output, temperature=temperature)

@@ -101,9 +101,7 @@ def test_pca_matches_numpy(synthetic_coords):
 
     assert np.allclose(jx.mean, npd.mean, atol=1e-8)
     assert np.allclose(jx.explained_variance, npd.explained_variance, atol=1e-6)
-    assert np.allclose(
-        jx.explained_variance_ratio, npd.explained_variance_ratio, atol=1e-8
-    )
+    assert np.allclose(jx.explained_variance_ratio, npd.explained_variance_ratio, atol=1e-8)
 
     # Both apply the sklearn svd_flip convention, so signs should agree; fall
     # back to absolute values to be robust to any residual degenerate flip.

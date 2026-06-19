@@ -59,7 +59,5 @@ def register(subparsers: argparse._SubParsersAction) -> None:
     p.add_argument("--temp", type=float, default=300.0, help="Temperature (K).")
     p.add_argument("--nbins", type=int, default=50, help="FEL histogram bins.")
     p.add_argument("--sigma", type=float, default=1.0, help="FEL Gaussian sigma.")
-    p.add_argument(
-        "--output", "-o", default="PCA_Report.html", help="Output HTML path."
-    )
+    p.add_argument("--output", "-o", default="PCA_Report.html", help="Output HTML path.")
     p.set_defaults(func=_cmd_interactive)

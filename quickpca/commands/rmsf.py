@@ -53,9 +53,7 @@ def compute_rmsf(
     """
     coords = np.asarray(coords, dtype=np.float64)
     if coords.ndim != 3 or coords.shape[2] != 3:
-        raise ValueError(
-            f"coords must have shape (F, N, 3); got {coords.shape!r}."
-        )
+        raise ValueError(f"coords must have shape (F, N, 3); got {coords.shape!r}.")
 
     if align:
         backend = get_backend("numpy")
@@ -64,9 +62,9 @@ def compute_rmsf(
     else:
         frames = coords
 
-    mean_pos = frames.mean(axis=0)                       # (N, 3)
-    disp = frames - mean_pos[None, :, :]                 # (F, N, 3)
-    msf = np.mean(np.sum(disp**2, axis=2), axis=0)       # (N,)
+    mean_pos = frames.mean(axis=0)  # (N, 3)
+    disp = frames - mean_pos[None, :, :]  # (F, N, 3)
+    msf = np.mean(np.sum(disp**2, axis=2), axis=0)  # (N,)
     return np.sqrt(msf).astype(np.float64)
 
 
@@ -163,19 +161,9 @@ def register(subparsers: argparse._SubParsersAction) -> None:
         ),
     )
     p.add_argument("topology", help="Topology/structure file (e.g. PDB).")
-    p.add_argument(
-        "trajectory", nargs="?", default=None, help="Trajectory file."
-    )
-    p.add_argument(
-        "--selection", "-s", default="name CA", help="Atom selection."
-    )
-    p.add_argument(
-        "--interval", "-i", type=int, default=1, help="Frame stride."
-    )
-    p.add_argument(
-        "--output", "-o", default="RMSF.png", help="Output PNG path."
-    )
-    p.add_argument(
-        "--no-align", action="store_true", help="Skip Kabsch alignment."
-    )
+    p.add_argument("trajectory", nargs="?", default=None, help="Trajectory file.")
+    p.add_argument("--selection", "-s", default="name CA", help="Atom selection.")
+    p.add_argument("--interval", "-i", type=int, default=1, help="Frame stride.")
+    p.add_argument("--output", "-o", default="RMSF.png", help="Output PNG path.")
+    p.add_argument("--no-align", action="store_true", help="Skip Kabsch alignment.")
     p.set_defaults(func=_cmd_rmsf)

@@ -176,9 +176,7 @@ def _plot_convergence(
     ncomp = cosines.size
     x = np.arange(1, ncomp + 1)
     colors = ["crimson" if c >= 0.5 else "steelblue" for c in cosines]
-    bars = ax_cos.bar(
-        x, cosines, color=colors, alpha=0.85, edgecolor="navy", linewidth=0.6
-    )
+    bars = ax_cos.bar(x, cosines, color=colors, alpha=0.85, edgecolor="navy", linewidth=0.6)
     for bar, c in zip(bars, cosines, strict=False):
         ax_cos.text(
             bar.get_x() + bar.get_width() / 2,
@@ -189,9 +187,7 @@ def _plot_convergence(
             fontsize=9,
             fontweight="bold",
         )
-    ax_cos.axhline(
-        0.5, ls="--", color="gray", lw=1.0, alpha=0.7, label="diffusion threshold"
-    )
+    ax_cos.axhline(0.5, ls="--", color="gray", lw=1.0, alpha=0.7, label="diffusion threshold")
     ax_cos.set_xlabel("Principal Component", fontsize=11, fontweight="bold")
     ax_cos.set_ylabel("Cosine content", fontsize=11, fontweight="bold")
     ax_cos.set_title(
@@ -268,9 +264,7 @@ def _cmd_convergence(args: argparse.Namespace) -> int:
         ncomp = min(args.ncomp, pca.projections.shape[1])
         if ncomp < 1:
             raise ValueError("PCA produced no components to analyse.")
-        cosines = np.array(
-            [cosine_content(pca.projections[:, k], k) for k in range(ncomp)]
-        )
+        cosines = np.array([cosine_content(pca.projections[:, k], k) for k in range(ncomp)])
 
         # Shared block boundaries for the variance and drift curves. Each
         # boundary is a cumulative frame count; ``fractions`` maps it onto the
@@ -290,9 +284,7 @@ def _cmd_convergence(args: argparse.Namespace) -> int:
 
         drifts = [block_drift(pca.projections[:, k], n_blocks) for k in range(ncomp)]
 
-        path = _plot_convergence(
-            cosines, fractions, cumulative_variance, drifts, args.output
-        )
+        path = _plot_convergence(cosines, fractions, cumulative_variance, drifts, args.output)
     except Exception as exc:  # noqa: BLE001 - surface a clean CLI error
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -316,7 +308,5 @@ def register(subparsers: argparse._SubParsersAction) -> None:
     p.add_argument("--selection", "-s", default="name CA", help="Atom selection.")
     p.add_argument("--interval", "-i", type=int, default=1, help="Frame stride.")
     p.add_argument("--ncomp", type=int, default=5, help="Number of PCs to analyse.")
-    p.add_argument(
-        "--output", "-o", default="convergence.png", help="Output PNG path."
-    )
+    p.add_argument("--output", "-o", default="convergence.png", help="Output PNG path.")
     p.set_defaults(func=_cmd_convergence)

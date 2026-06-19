@@ -86,9 +86,7 @@ def test_coords_from_pymol_shape(fake_cmd: _FakeCmd) -> None:
     assert coords.dtype == np.float64
 
 
-def test_coords_from_pymol_matches_source(
-    fake_cmd: _FakeCmd, fake_coords: np.ndarray
-) -> None:
+def test_coords_from_pymol_matches_source(fake_cmd: _FakeCmd, fake_coords: np.ndarray) -> None:
     coords = coords_from_pymol(fake_cmd, "x")
     np.testing.assert_allclose(coords, fake_coords)
 
@@ -144,9 +142,7 @@ def test_run_from_pymol_writes_png(fake_cmd: _FakeCmd, tmp_path) -> None:
     assert out.stat().st_size > 5_000
 
 
-def test_run_from_pymol_autoselects_first_object(
-    fake_cmd: _FakeCmd, tmp_path
-) -> None:
+def test_run_from_pymol_autoselects_first_object(fake_cmd: _FakeCmd, tmp_path) -> None:
     out = tmp_path / "auto.png"
     result = run_from_pymol(cmd=fake_cmd, output=str(out))
     assert result == str(out)

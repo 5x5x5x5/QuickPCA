@@ -133,18 +133,14 @@ def test_explained_variance_table(app_module):
     for i in range(1, len(cums)):
         assert cums[i] == pytest.approx(cums[i - 1] + evs[i], abs=0.05)
         # And the values must track the underlying PCAResult arrays.
-        assert evs[i] == pytest.approx(
-            float(pca.explained_variance_ratio[i]) * 100, abs=0.01
-        )
+        assert evs[i] == pytest.approx(float(pca.explained_variance_ratio[i]) * 100, abs=0.01)
 
 
 def test_run_pipeline_on_coords_writes_png(tmp_path, synthetic_coords, app_module):
     """The pure pipeline helper renders a non-trivial PNG on synthetic input."""
     app = app_module
     out = tmp_path / "report.png"
-    result = app.run_pipeline_on_coords(
-        synthetic_coords, output_png=str(out), n_components=8
-    )
+    result = app.run_pipeline_on_coords(synthetic_coords, output_png=str(out), n_components=8)
     assert result.png_path == str(out)
     assert out.is_file()
     assert os.path.getsize(out) > 5 * 1024
