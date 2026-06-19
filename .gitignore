@@ -8,3 +8,8 @@ dist/
 .ruff_cache/
 .coverage
 PCA_Report.png
+
+# Claude Code worktree scratch (harness-managed, never commit)
+.claude/
+.venv/
+coverage.xml
