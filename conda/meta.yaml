@@ -1,0 +1,58 @@
+{% set name = "quickpca" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  # For a release build, point at the PyPI sdist:
+  # url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  # sha256: 0000000000000000000000000000000000000000000000000000000000000000
+  # For a local build from this checkout, use the recipe's parent directory:
+  path: ..
+
+build:
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  entry_points:
+    - quickpca = quickpca.cli:main
+
+requirements:
+  host:
+    - python >=3.10
+    - pip
+    - hatchling
+  run:
+    - python >=3.10
+    - numpy
+    - scipy
+    - scikit-learn
+    - matplotlib
+    - mdanalysis
+
+test:
+  imports:
+    - quickpca
+  commands:
+    - quickpca --version
+
+about:
+  home: https://github.com/5x5x5x5/quickpca
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Headless essential-dynamics PCA, cross-correlation and Free-Energy Landscapes for MD trajectories.
+  description: |
+    QuickPCA performs essential-dynamics principal component analysis,
+    residue cross-correlation analysis and Free-Energy Landscape
+    construction for molecular dynamics trajectories. Originally a PyMOL
+    script by Gleb Novikov, now a headless, pip-installable package with
+    an optional JAX backend.
+  dev_url: https://github.com/5x5x5x5/quickpca
+  doc_url: https://github.com/5x5x5x5/quickpca#readme
+
+extra:
+  recipe-maintainers:
+    - 5x5x5x5
