@@ -1,0 +1,24 @@
+# Conda development environment for QuickPCA.
+# Create with:  conda env create -f environment.yml
+# Update with:  conda env update -f environment.yml --prune
+name: quickpca
+channels:
+  - conda-forge
+dependencies:
+  - python >=3.10
+  - pip
+  # Runtime dependencies (mirrors pyproject.toml [project.dependencies]):
+  - numpy
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - mdanalysis
+  # Optional accelerated backend (uncomment to install JAX via conda-forge):
+  # - jax
+  # - jaxlib
+  - pip:
+      # Install QuickPCA itself in editable mode with the dev extras
+      # (pytest, ruff, mypy, pre-commit, ...).
+      - -e .[dev]
+      # Optional accelerated backend (uncomment to install JAX via pip):
+      # - jax[cpu]>=0.4.20
