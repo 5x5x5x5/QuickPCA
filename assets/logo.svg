@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  QuickPCA logo — hand-authored, self-contained vector mark.
+  Concept: a 2-D PCA scatter cloud enclosed by its covariance ellipse,
+  with PC1 (major) and PC2 (minor) eigenvector axes drawn as arrows.
+  Author: Gleb Novikov — The Visual Hub. MIT licensed.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="260" viewBox="0 0 800 260" role="img" aria-label="QuickPCA logo">
+  <title>QuickPCA</title>
+  <desc>Essential Dynamics Analysis for MD trajectories — PCA scatter ellipse with PC1/PC2 eigenvector axes.</desc>
+
+  <defs>
+    <!-- Brand gradient: deep indigo to teal, evoking energy landscapes. -->
+    <linearGradient id="qpcaBrand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"   stop-color="#3b2f8f"/>
+      <stop offset="0.55" stop-color="#3457b0"/>
+      <stop offset="1"   stop-color="#16a3a3"/>
+    </linearGradient>
+    <linearGradient id="qpcaEllipse" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16a3a3" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#3457b0" stop-opacity="0.10"/>
+    </linearGradient>
+    <!-- Arrowheads for the eigenvector axes. -->
+    <marker id="qpcaArrowMajor" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#e8543c"/>
+    </marker>
+    <marker id="qpcaArrowMinor" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2f6fd0"/>
+    </marker>
+  </defs>
+
+  <!-- ── Glyph: PCA scatter inside its covariance ellipse ─────────────── -->
+  <!-- The ellipse is rotated ~30deg so PC1 runs along its major axis. -->
+  <g transform="translate(130,130)">
+    <!-- soft circular plate -->
+    <circle cx="0" cy="0" r="104" fill="#ffffff"/>
+    <circle cx="0" cy="0" r="104" fill="none" stroke="url(#qpcaBrand)" stroke-width="6"/>
+
+    <g transform="rotate(-30)">
+      <!-- covariance ellipse (1-sigma) -->
+      <ellipse cx="0" cy="0" rx="80" ry="40" fill="url(#qpcaEllipse)"
+               stroke="#3457b0" stroke-width="2.4" stroke-dasharray="6 5" opacity="0.85"/>
+
+      <!-- PC1 eigenvector (major axis) -->
+      <line x1="-86" y1="0" x2="86" y2="0" stroke="#e8543c" stroke-width="4.2"
+            stroke-linecap="round" marker-end="url(#qpcaArrowMajor)"/>
+      <!-- PC2 eigenvector (minor axis) -->
+      <line x1="0" y1="50" x2="0" y2="-50" stroke="#2f6fd0" stroke-width="4.2"
+            stroke-linecap="round" marker-end="url(#qpcaArrowMinor)"/>
+
+      <!-- scatter cloud: points distributed along the principal axes -->
+      <g fill="#3b2f8f">
+        <circle cx="-58" cy="-9" r="5"/>
+        <circle cx="-40" cy="10" r="5.5"/>
+        <circle cx="-25" cy="-14" r="5"/>
+        <circle cx="-14" cy="8" r="6"/>
+        <circle cx="2"   cy="-6" r="6.5"/>
+        <circle cx="14"  cy="12" r="5.5"/>
+        <circle cx="26"  cy="-11" r="5"/>
+        <circle cx="42"  cy="6" r="5.5"/>
+        <circle cx="56"  cy="-8" r="5"/>
+        <circle cx="-30" cy="-2" r="4"/>
+        <circle cx="34"  cy="2" r="4"/>
+      </g>
+      <!-- axis labels -->
+      <g transform="rotate(30)" font-family="'DejaVu Sans','Segoe UI',Arial,sans-serif"
+         font-weight="700" fill="#444">
+        <text x="92" y="-56" font-size="13" fill="#e8543c">PC1</text>
+        <text x="-58" y="-78" font-size="13" fill="#2f6fd0">PC2</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ── Wordmark ─────────────────────────────────────────────────────── -->
+  <g font-family="'DejaVu Sans','Segoe UI',Arial,sans-serif" transform="translate(262,0)">
+    <text x="0" y="128" font-size="68" font-weight="800" letter-spacing="-1">
+      <tspan fill="#2b2b3a">Quick</tspan><tspan fill="url(#qpcaBrand)">PCA</tspan>
+    </text>
+    <text x="3" y="168" font-size="21" font-weight="500" fill="#5a5a6a" letter-spacing="0.5">
+      Essential Dynamics Analysis
+    </text>
+  </g>
+</svg>

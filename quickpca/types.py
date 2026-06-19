@@ -40,11 +40,11 @@ class PCADecomposition:
     Mirrors the relevant pieces of an sklearn ``PCA`` fit.
     """
 
-    projections: np.ndarray            # (n_frames, n_components)
-    components: np.ndarray             # (n_components, n_features)
-    explained_variance: np.ndarray     # (n_components,)
+    projections: np.ndarray  # (n_frames, n_components)
+    components: np.ndarray  # (n_components, n_features)
+    explained_variance: np.ndarray  # (n_components,)
     explained_variance_ratio: np.ndarray  # (n_components,)
-    mean: np.ndarray                   # (n_features,)
+    mean: np.ndarray  # (n_features,)
 
 
 @dataclass
@@ -56,7 +56,7 @@ class PCAResult:
     explained_variance_ratio: np.ndarray
     cumulative_variance: np.ndarray
     components: np.ndarray
-    cross_correlation: np.ndarray      # (n_atoms, n_atoms)
+    cross_correlation: np.ndarray  # (n_atoms, n_atoms)
     n_components: int
     n_atoms: int
     n_frames: int

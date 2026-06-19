@@ -1,0 +1,98 @@
+# Release workflow: build sdist + wheel and publish to PyPI.
+#
+# Publishing uses PyPI Trusted Publishing (OIDC) -- no API token is stored in
+# this repository. To configure it:
+#
+#   1. Create the project on PyPI (or use an existing one named "quickpca").
+#   2. Go to the project's "Publishing" settings on https://pypi.org and add a
+#      new "Trusted Publisher" (GitHub Actions) with:
+#         Owner:           5x5x5x5
+#         Repository:      quickpca
+#         Workflow name:   release.yml
+#         Environment:     pypi   (optional but recommended)
+#   3. Push a tag matching "v*" (e.g. `git tag v1.0.0 && git push origin v1.0.0`).
+#      The "publish" job below requests an OIDC token (id-token: write) and the
+#      pypa/gh-action-pypi-publish action exchanges it for a short-lived upload
+#      credential. No secrets required.
+#
+# Fallback (if Trusted Publishing is unavailable): add a repository secret named
+# PYPI_API_TOKEN and uncomment the `password:` line in the publish step below.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    # Restrict publishing to tag pushes; manual runs only build by default.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: pypi
+      url: https://pypi.org/project/quickpca/
+    permissions:
+      id-token: write  # Required for OIDC Trusted Publishing.
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          # Trusted Publishing (OIDC) is used by default -- no token needed.
+          # Fallback: uncomment the next line and set the PYPI_API_TOKEN secret.
+          # password: ${{ secrets.PYPI_API_TOKEN }}
+
+  github-release:
+    name: Create GitHub Release
+    needs: publish
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write  # Required to create a GitHub Release.
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

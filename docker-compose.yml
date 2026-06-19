@@ -1,0 +1,39 @@
+# QuickPCA — Docker Compose
+#
+# Two services share the same image:
+#   * quickpca — the CLI (default ENTRYPOINT). Pass subcommands as arguments.
+#   * web      — the Streamlit demo on port 8501.
+#
+# Both mount ./data into the container at /data so you can supply your own
+# topology/trajectory files (these are excluded from the image; see .dockerignore).
+#
+# The container runs as the non-root user quickpca (uid 1000); for it to write
+# reports into ./data, that directory must be writable by uid 1000 (chmod/chown
+# it, or set `user: "${UID:-1000}:${GID:-1000}"` on the service).
+#
+# Usage:
+#   docker compose run --rm quickpca run /data/reference.pdb /data/trajectory.nc
+#   docker compose up web      # then open http://localhost:8501
+
+services:
+  quickpca:
+    build: .
+    image: quickpca:latest
+    # Override the default `--help` with any quickpca subcommand, e.g.:
+    #   docker compose run --rm quickpca run /data/reference.pdb /data/trajectory.nc
+    volumes:
+      - ./data:/data
+
+  web:
+    build: .
+    image: quickpca:latest
+    # Launch the Streamlit demo via the `quickpca web` subcommand (the
+    # ENTRYPOINT is `quickpca`, so only the subcommand is given here).
+    # The `web` subcommand and app.py are provided by another unit and will
+    # exist after integration; until then, run the CLI service above.
+    # Equivalent direct invocation: `streamlit run app.py` on port 8501.
+    command: ["web"]
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/data

@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: QuickPCA
+authors:
+  - family-names: Novikov
+    given-names: Gleb
+version: 1.0.0
+date-released: "2026-06-19"
+repository-code: "https://github.com/5x5x5x5/quickpca"
+license: MIT
+keywords:
+  - molecular-dynamics
+  - PCA
+  - essential-dynamics
+  - free-energy-landscape
+  - bioinformatics

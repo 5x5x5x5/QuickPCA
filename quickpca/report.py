@@ -45,9 +45,15 @@ def plot_report(
     fig.suptitle(title, fontsize=15, fontweight="bold")
 
     gs = GridSpec(
-        2, 2, figure=fig,
-        hspace=0.32, wspace=0.35,
-        top=0.94, bottom=0.06, left=0.07, right=0.97,
+        2,
+        2,
+        figure=fig,
+        hspace=0.32,
+        wspace=0.35,
+        top=0.94,
+        bottom=0.06,
+        left=0.07,
+        right=0.97,
     )
 
     ax_fel = fig.add_subplot(gs[0, 0])
@@ -60,12 +66,8 @@ def plot_report(
     XX, YY = np.meshgrid(xc, yc)
     levels = np.linspace(0, np.nanpercentile(F, 97), 30)
 
-    cf = ax_fel.contourf(
-        XX, YY, F_plot.T, levels=levels, cmap="RdYlBu_r", extend="max"
-    )
-    ax_fel.contour(
-        XX, YY, F_plot.T, levels=levels[::5], colors="k", linewidths=0.4, alpha=0.5
-    )
+    cf = ax_fel.contourf(XX, YY, F_plot.T, levels=levels, cmap="RdYlBu_r", extend="max")
+    ax_fel.contour(XX, YY, F_plot.T, levels=levels[::5], colors="k", linewidths=0.4, alpha=0.5)
 
     cbar = fig.colorbar(cf, ax=ax_fel, fraction=0.046, pad=0.04)
     cbar.set_label("Free Energy (kJ mol⁻¹)", fontsize=10)
@@ -75,19 +77,34 @@ def plot_report(
 
     ax_fel.plot(pc1, pc2, color="white", lw=0.25, alpha=0.3, rasterized=True)
     ax_fel.scatter(
-        pc1[0], pc2[0], c="lime", s=130, marker="*",
-        zorder=5, edgecolors="k", lw=0.7, label="Start",
+        pc1[0],
+        pc2[0],
+        c="lime",
+        s=130,
+        marker="*",
+        zorder=5,
+        edgecolors="k",
+        lw=0.7,
+        label="Start",
     )
     ax_fel.scatter(
-        pc1[-1], pc2[-1], c="red", s=130, marker="*",
-        zorder=5, edgecolors="k", lw=0.7, label="End",
+        pc1[-1],
+        pc2[-1],
+        c="red",
+        s=130,
+        marker="*",
+        zorder=5,
+        edgecolors="k",
+        lw=0.7,
+        label="End",
     )
 
-    ax_fel.set_xlabel(f"PC1 ({evr[0]*100:.1f}%)", fontsize=11, fontweight="bold")
-    ax_fel.set_ylabel(f"PC2 ({evr[1]*100:.1f}%)", fontsize=11, fontweight="bold")
+    ax_fel.set_xlabel(f"PC1 ({evr[0] * 100:.1f}%)", fontsize=11, fontweight="bold")
+    ax_fel.set_ylabel(f"PC2 ({evr[1] * 100:.1f}%)", fontsize=11, fontweight="bold")
     ax_fel.set_title(
         f"Free-Energy Landscape  (T = {temperature:.0f} K)",
-        fontsize=12, fontweight="bold",
+        fontsize=12,
+        fontweight="bold",
     )
     ax_fel.set_xlim(fel.xedges[0], fel.xedges[-1])
     ax_fel.set_ylim(fel.yedges[0], fel.yedges[-1])
@@ -97,8 +114,13 @@ def plot_report(
     # ── Panel 2: Cross-Correlation Matrix ────────────────────────────────────
     cc = pca.cross_correlation
     im = ax_cc.imshow(
-        cc, cmap="RdBu_r", vmin=-1, vmax=1,
-        aspect="auto", origin="lower", interpolation="nearest",
+        cc,
+        cmap="RdBu_r",
+        vmin=-1,
+        vmax=1,
+        aspect="auto",
+        origin="lower",
+        interpolation="nearest",
     )
     fig.colorbar(im, ax=ax_cc, fraction=0.046, pad=0.04, label="Cross-correlation")
     ax_cc.set_xlabel("Residue index", fontsize=11, fontweight="bold")
@@ -110,8 +132,12 @@ def plot_report(
     x_ticks = range(1, n_show + 1)
 
     bars = ax_bar.bar(
-        x_ticks, evr[:n_show] * 100,
-        color="steelblue", alpha=0.85, edgecolor="navy", linewidth=0.6,
+        x_ticks,
+        evr[:n_show] * 100,
+        color="steelblue",
+        alpha=0.85,
+        edgecolor="navy",
+        linewidth=0.6,
     )
 
     for bar, pct in zip(bars, evr[:n_show] * 100, strict=False):
@@ -119,13 +145,21 @@ def plot_report(
             bar.get_x() + bar.get_width() / 2,
             bar.get_height() + 0.3,
             f"{pct:.1f}%",
-            ha="center", va="bottom", fontsize=8, fontweight="bold",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+            fontweight="bold",
         )
 
     ax2 = ax_bar.twinx()
     ax2.plot(
-        x_ticks, np.cumsum(evr[:n_show]) * 100,
-        "o--", color="coral", lw=1.8, ms=5, label="Cumulative",
+        x_ticks,
+        np.cumsum(evr[:n_show]) * 100,
+        "o--",
+        color="coral",
+        lw=1.8,
+        ms=5,
+        label="Cumulative",
     )
     ax2.set_ylabel("Cumulative Variance (%)", fontsize=10, color="coral")
     ax2.tick_params(axis="y", labelcolor="coral")
@@ -136,9 +170,7 @@ def plot_report(
 
     ax_bar.set_xlabel("Principal Component", fontsize=11, fontweight="bold")
     ax_bar.set_ylabel("Explained Variance (%)", fontsize=11, fontweight="bold")
-    ax_bar.set_title(
-        f"First {n_show} PCs — Explained Variance", fontsize=12, fontweight="bold"
-    )
+    ax_bar.set_title(f"First {n_show} PCs — Explained Variance", fontsize=12, fontweight="bold")
     ax_bar.set_xticks(list(x_ticks))
     ax_bar.set_ylim(0, 105)
     ax_bar.grid(True, axis="y", color="skyblue", alpha=0.4, linestyle="--")
@@ -151,8 +183,14 @@ def plot_report(
     ]:
         pct = evr[idx] * 100
         ax_kde.hist(
-            comp, bins=60, color=color, alpha=0.45,
-            edgecolor="k", linewidth=0.3, density=True, label=f"{label} ({pct:.1f}%)",
+            comp,
+            bins=60,
+            color=color,
+            alpha=0.45,
+            edgecolor="k",
+            linewidth=0.3,
+            density=True,
+            label=f"{label} ({pct:.1f}%)",
         )
         xr = np.linspace(comp.min(), comp.max(), 300)
         ax_kde.plot(xr, gaussian_kde(comp)(xr), color=color, lw=2.0)
