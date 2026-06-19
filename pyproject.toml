@@ -1,0 +1,103 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quickpca"
+dynamic = ["version"]
+description = "Headless essential-dynamics PCA, cross-correlation and Free-Energy Landscapes for MD trajectories."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Gleb Novikov" }]
+keywords = [
+    "molecular-dynamics",
+    "PCA",
+    "essential-dynamics",
+    "free-energy-landscape",
+    "JAX",
+    "PyMOL",
+    "bioinformatics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "matplotlib",
+    "MDAnalysis",
+]
+
+[project.optional-dependencies]
+jax = ["jax>=0.4.20", "jaxlib>=0.4.20"]
+viz = ["plotly>=5.18", "kaleido"]
+web = ["streamlit>=1.30"]
+docs = [
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.24",
+    "mkdocs-gen-files",
+    "pymdown-extensions",
+]
+notebooks = ["jupyter", "nbconvert", "ipykernel", "papermill"]
+dev = ["pytest>=7", "pytest-cov", "ruff>=0.4", "mypy>=1.8", "pre-commit"]
+all = [
+    "jax>=0.4.20",
+    "jaxlib>=0.4.20",
+    "plotly>=5.18",
+    "kaleido",
+    "streamlit>=1.30",
+]
+
+[project.scripts]
+quickpca = "quickpca.cli:main"
+
+[project.entry-points."quickpca.backends"]
+numpy = "quickpca.backends.numpy_backend:NumpyBackend"
+jax = "quickpca.backends.jax_backend:JaxBackend"
+
+[project.urls]
+Homepage = "https://github.com/5x5x5x5/quickpca"
+Repository = "https://github.com/5x5x5x5/quickpca"
+Documentation = "https://github.com/5x5x5x5/quickpca#readme"
+Issues = "https://github.com/5x5x5x5/quickpca/issues"
+
+[tool.hatch.version]
+path = "quickpca/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["quickpca"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"quickpca/py.typed" = "quickpca/py.typed"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501", "B008"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["quickpca"]
