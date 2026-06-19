@@ -74,9 +74,7 @@ def compute_pca_from_files(
     """Load a trajectory from files and run :func:`compute_pca`."""
     from .io.loader import load_trajectory
 
-    traj = load_trajectory(
-        topology, trajectory, selection=selection, interval=interval
-    )
+    traj = load_trajectory(topology, trajectory, selection=selection, interval=interval)
     return compute_pca(
         traj.coords,
         n_components=n_components,

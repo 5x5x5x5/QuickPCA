@@ -46,9 +46,7 @@ def load_trajectory(
 
     ag = u.select_atoms(selection)
     if len(ag) == 0:
-        raise ValueError(
-            f"Selection {selection!r} matched 0 atoms in {topology!r}."
-        )
+        raise ValueError(f"Selection {selection!r} matched 0 atoms in {topology!r}.")
 
     frames = []
     for _ in u.trajectory[::interval]:
@@ -56,8 +54,7 @@ def load_trajectory(
 
     if len(frames) < 3:
         raise ValueError(
-            f"Need at least 3 frames for PCA, found {len(frames)} "
-            f"(interval={interval})."
+            f"Need at least 3 frames for PCA, found {len(frames)} (interval={interval})."
         )
 
     coords = np.asarray(frames, dtype=np.float64)

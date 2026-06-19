@@ -38,9 +38,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
             n_bins=args.nbins,
             sigma=args.sigma,
         )
-        path = plot_report(
-            pca, fel, output=args.output, temperature=args.temp
-        )
+        path = plot_report(pca, fel, output=args.output, temperature=args.temp)
     except Exception as exc:  # noqa: BLE001 - surface a clean CLI error
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -67,15 +65,13 @@ def _build_run_parser(subparsers: argparse._SubParsersAction) -> None:
     p.add_argument("--nbins", type=int, default=50, help="FEL histogram bins.")
     p.add_argument("--sigma", type=float, default=1.0, help="FEL Gaussian sigma.")
     p.add_argument(
-        "--backend", "-b", default="numpy",
+        "--backend",
+        "-b",
+        default="numpy",
         help=f"Compute backend (available: {', '.join(available_backends())}).",
     )
-    p.add_argument(
-        "--output", "-o", default="PCA_Report.png", help="Output PNG path."
-    )
-    p.add_argument(
-        "--no-align", action="store_true", help="Skip Kabsch alignment."
-    )
+    p.add_argument("--output", "-o", default="PCA_Report.png", help="Output PNG path.")
+    p.add_argument("--no-align", action="store_true", help="Skip Kabsch alignment.")
     p.set_defaults(func=_cmd_run)
 
 
@@ -88,9 +84,7 @@ def _discover_commands(subparsers: argparse._SubParsersAction) -> None:
     """Import every module in ``quickpca.commands`` and call its ``register``."""
     from . import commands
 
-    for _finder, name, _ispkg in pkgutil.iter_modules(
-        commands.__path__, "quickpca.commands."
-    ):
+    for _finder, name, _ispkg in pkgutil.iter_modules(commands.__path__, "quickpca.commands."):
         try:
             module = importlib.import_module(name)
         except Exception as exc:  # noqa: BLE001 - a broken plugin must not crash CLI
@@ -101,9 +95,7 @@ def _discover_commands(subparsers: argparse._SubParsersAction) -> None:
             try:
                 register(subparsers)
             except Exception as exc:  # noqa: BLE001
-                print(
-                    f"warning: failed to register {name}: {exc}", file=sys.stderr
-                )
+                print(f"warning: failed to register {name}: {exc}", file=sys.stderr)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -111,9 +103,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="quickpca",
         description="QuickPCA — headless essential-dynamics PCA for MD trajectories.",
     )
-    parser.add_argument(
-        "--version", action="version", version=f"quickpca {__version__}"
-    )
+    parser.add_argument("--version", action="version", version=f"quickpca {__version__}")
     subparsers = parser.add_subparsers(dest="command", metavar="command")
 
     _build_run_parser(subparsers)

@@ -80,8 +80,6 @@ def test_pca_matches_sklearn(synthetic_coords):
     sk = PCA(n_components=n_comp, svd_solver="full").fit(X)
 
     assert np.allclose(decomp.explained_variance, sk.explained_variance_, atol=1e-6)
-    assert np.allclose(
-        decomp.explained_variance_ratio, sk.explained_variance_ratio_, atol=1e-8
-    )
+    assert np.allclose(decomp.explained_variance_ratio, sk.explained_variance_ratio_, atol=1e-8)
     # Components match up to sign; both use sklearn-style svd_flip so they agree.
     assert np.allclose(np.abs(decomp.components), np.abs(sk.components_), atol=1e-6)
